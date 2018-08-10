@@ -12,8 +12,9 @@ var Guesses;
 var computerChoice;
 
 //CAPTURING THE PLAYERS INPUT
-//when a key is struck by the player this function will happen:
-document.onkeyup = function (event) {
+//used jQuery to create a fuction that worked the same way the non-jQuery fuction worked...
+$(document).onkeyup(function(event){
+
     //when the player hits a key the "event" is registered becuase function(event) was stated above
     var playerGuess = event.key;
 
@@ -46,8 +47,8 @@ document.onkeyup = function (event) {
   $('#wins').html('Wins'+ Wins);
   $('#losses').html('Losses: ' + Losses);
   $('#counter').html('Guesses Remaining: ' + Guesses);
-
-}
+//remember that the ) must go on the outside of the } because you are using jQuery for the fuction above on line 16
+}) 
 
 //so that it will launch as soon as the page loads, notice it is outside the function
 gameStart();
