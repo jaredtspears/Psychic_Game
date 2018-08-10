@@ -1,56 +1,60 @@
-//attempting again to start from scratch and figure this code out...
+// psychic game js
 
+var alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
+    'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+
+// Variables for tracking our wins, losses and ties. They begin at 0.
 var Wins = 0;
 var Losses = 0;
-var Guesses = 0;
 
+//letting js know that there will be guesses coming (see line 61) within a function that will run outside the document.onkeyup function (line16)
+var Guesses;
+var computerChoice;
 
-//seting up the vars for the alphabet and the computer choice random...
-var alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l',
-    'm','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+//CAPTURING THE PLAYERS INPUT
+//when a key is struck by the player this function will happen:
+document.onkeyup = function (event) {
+    //when the player hits a key the "event" is registered becuase function(event) was stated above
+    var playerGuess = event.key;
 
-var computerChoice = alphabet[Math.floor(Math.random() * alphabet.length)];
+    //used jquery to assign the id onKey to the html with the string + the var player guess. Should be the interactive feature of the buttons on the keyboard
+    $("#onKey").html("Your Guess: " + playerGuess);
 
-var randomLetter = randomWordArr[Math.floor(Math.random() * randomWordArr.length)];
-
-var s;
-var count = 0;
-//empty array to store the guesses
-var answerArray = [];
-
-//fill the answer array with under scores
-//the number of underscores matches the letters in the randomly choosen word
-function startUp() {
-    // this loop is to allow for the answerArray index to be added to the randoWords array.
-    for (var i = 0; i < randomLetter.length; i++) {
-        answerArray[i] = "_";
+    //correct answer 3 equals here because the player and the computer are exactly the same 
+    if (playerGuess === computerChoice) {
+        //should add 1 to wins
+        Wins++;
+        //this links the function down on 57 here, should reset guesses used and a new computer guess is generated
+        gameStart();
     }
 
-    //this puts them in a string
-    s = answerArray.join(" ");
-    document.getElementById("currentGuess").innerHTML = s;
+    //this is if guesses are go to zero...you lose and game starts over
+    else if (Guesses < 0) {
+        Losses++;
+         //this links the function down on 57 here, should reset guesses used and a new computer guess is generated
+        gameStart();
+    }
+
+    //incorrect guess by player
+    else {
+        //decreases guesses by one up until 0
+        Guesses--;
+
+    }
+
+    //this says to go tag the element within the $() for assingment to = a "string" + a global var within JS
+  $('#wins').html('Wins'+ Wins);
+  $('#losses').html('Losses: ' + Losses);
+  $('#counter').html('Guesses Remaining: ' + Guesses);
+
 }
-function Letter() {
-    //the letter that the user typed in, in the box
-    var letter = document.getElementById("letter").value;
 
-    //have a guess (more checks can be made here, only letters etc)
-    if (letter.length > 0) {
-        for (var i = 0; i < randomWord.length; i++) {
-            //if the randomword contains a letter that the user typed in
-            if (randomLetter[i] === letter) {
-                //assign it to letter
-                answerArray[i] = letter;
-            }
-        }
-        //here is how many times it takes to guess
-        count++;
-        document.getElementById("counter").innerHTML = "# of clicks: " + count;
-        document.getElementById("answer").innerHTML = answerArray.join(" ");
-    }
-    //just a thing to annoy 
-    if (count > 5) {
-        document.getElementById("stat").innerHTML = "Come on - you should have guessed it by now";
-    }
+//so that it will launch as soon as the page loads, notice it is outside the function
+gameStart();
 
+//global scope function, this could be placed towards the top or bottom
+function gameStart() {
+    Guesses = 10; //sets guesses to 10 starting, not zero like the other vars
+    computerChoice = alphabet[Math.floor(Math.random() * alphabet.length)];
+    console.log(computerChoice)
 }
